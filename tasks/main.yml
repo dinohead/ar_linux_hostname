@@ -1,0 +1,16 @@
+---
+
+- name: HOSTNAME | Set the system hostname
+  become: true
+  become_user: root
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: LINEINFILE | Ensure hostname is in /etc/hosts
+  become: true
+  become_user: root
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    insertafter: '^127\.0\.0\.1'
+    line: '127.0.1.1    {{ inventory_hostname_short }} {{ inventory_hostname }}'
